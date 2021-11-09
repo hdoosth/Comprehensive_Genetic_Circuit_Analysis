@@ -346,15 +346,6 @@ def calculate_terminator_strength(self, RNA_seq_Profile, sample_name, Chromosome
 			
 		return terminator_strength
 
-
-# genomes = {'NZ_CP035288.1':2466502,'NZ_CP035289.1':20117,'NZ_CP035290.1':4439}
-# # profile, stats = create_profile("Alignment_5A.SAM")
-# # profile = load_profile("Alignment_5A"+"_profile.json",genomes)
-# # norm_profile = normalize(profile,"Alignment_5A",'random.gff')
-# profile = load_profile("Alignment_5A"+"_profile_norm.json",genomes)
-# plot_regions_of_interest(profile,{'NZ_CP035288.1':[[1027400,1027500]]})
-
-
 def read_gff(self, inputfiles, item):
     
     gene_dict = {aa:{} for aa in item}
@@ -417,3 +408,15 @@ def map_raw_FASTQ_files(sample_name,RAW_FASTQ_filenames,Fasta_filename,ebwt_base
         # status4 = subprocess.call(cmd_mapping, shell=True)
 
 map_raw_FASTQ_files('15B',['5B_R_1.fastq','5B_R_2.fastq'],'GCF_006094375.1_ASM609437v1_genomic.fa','GCF_006094375')
+
+from Bio import SeqIO
+genomes = {}
+for record in SeqIO.parse('Abaylyi.fasta', "fasta"):
+    genomes[record.id] = len(record.seq)
+
+# genomes = {'CR543861.1':2466502,'NZ_CP035289.1':20117,'NZ_CP035290.1':4439}
+# profile, stats = create_profile("Alignment_5A.SAM")
+profile = load_profile("Alignment_5A"+"_profile.json",genomes)
+norm_profile = normalize(profile,"Alignment_5A",'random.gff')
+# profile = load_profile("Alignment_5A"+"_profile_norm.json",genomes)
+plot_regions_of_interest(profile,{'NZ_CP035288.1':[[1027400,1027500]]})
